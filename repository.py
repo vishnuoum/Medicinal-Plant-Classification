@@ -26,6 +26,16 @@ def signup(name, phone, password):
     else:
         logging.info("Data not inserted into DB")
         return "error"
+    
+def getUsername(id):
+    conn.execute("""Select name from user where sha2(id,256) = %s""",[id])
+    logging.info("Execeuted Query ** %s **",conn._last_executed)
+    result = conn.fetchone()
+    logging.info("Get username DB response = %s",json.dumps(result))
+    if(result == None):
+        return "error"
+    else:
+        return result
 
 def getPlants():
     conn.execute("""Select * from plant""")

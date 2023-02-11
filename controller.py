@@ -38,12 +38,27 @@ def signup():
     logging.info("-----Hit Singup End point-----\n")
     logging.info("Request Parameters %s",request.form)
 
-    result=repository.signup(name=request.form.get("name"),phone=request.form.get("phone"), password = request.form.get("password"))
+    result=repository.signup(name=request.form.get("username"),phone=request.form.get("phone"), password = request.form.get("password"))
     if(result!="error"):
         logging.info("-----Signup success-----\n")
         return Response(json.dumps(result),status=200,content_type="application/json")
     else:
         logging.info("-----Signup failure-----\n")
+        return Response(response="Error",status=401)
+    
+
+# getUsername
+@controller.post("/getUsername")
+def getUsername():
+    logging.info("-----Hit Get username End point-----\n")
+    logging.info("Request Parameters %s",request.form)
+
+    result=repository.getUsername(id=request.form.get("id"))
+    if(result!="error"):
+        logging.info("-----Get username success-----\n")
+        return Response(json.dumps(result),status=200,content_type="application/json")
+    else:
+        logging.info("-----Get username failure-----\n")
         return Response(response="Error",status=401)
 
 
