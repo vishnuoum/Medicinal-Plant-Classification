@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 import util
 import os
+from scraper import nearBy
 
 
 
@@ -102,3 +103,11 @@ def classify():
     elif(result=="Not satisfied"):
         return Response(response="No Leaf",status=400)
     return Response(response=json.dumps(result, default=str),status=200)
+
+@controller.get("/nearby")
+def nearby():
+    result = nearBy(location=request.args.get("location"))
+    if(result == "error"):
+        return Response(response="Error",status=400)
+    else:
+        return Response(response=json.dumps(result, default=str),status=200)
