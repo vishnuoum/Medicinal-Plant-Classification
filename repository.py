@@ -37,13 +37,23 @@ def getUsername(id):
     else:
         return result
 
-def getPlants():
-    conn.execute("""Select * from plant""")
+def getPlants(q):
+    conn.execute("""Select * from plant where name like %s""",["%"+q+"%"])
     logging.info("Execeuted Query ** %s **",conn._last_executed)
     result=conn.fetchall()
     logging.info("Get Plants DB response = %s",json.dumps(result))
     if(result==None):
         return "error"
+    else:
+        return result
+    
+def getPlant(id):
+    conn.execute("""Select * from plant where id=%s""",[id])
+    logging.info("Execeuted Query ** %s **",conn._last_executed)
+    result = conn.fetchone()
+    logging.info("Get Plant DB response = %s",json.dumps(result))
+    if(result==None):
+        return {}
     else:
         return result
 

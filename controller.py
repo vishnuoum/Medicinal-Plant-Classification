@@ -65,7 +65,7 @@ def getUsername():
 # getPlants route
 @controller.get("/getPlants")
 def getPlants():
-    result=repository.getPlants()
+    result=repository.getPlants(q=request.args.get("q").strip())
     if(result!="error"):
         logging.info("-----Getting plant list-----\n")
         return Response(json.dumps(result),status=200,content_type="application/json")
@@ -77,9 +77,10 @@ def getPlants():
 # getPurpose route
 @controller.get("/getPurpose")
 def getPurpose():
-    result=repository.getPurpose(request.form.get("id"))
+    result=repository.getPurpose(request.args.get("id"))
+    print(result)
     if(result!="error"):
-        logging.info("-----Getting purpose for plantid = %s-----\n",request.form.get("id"))
+        logging.info("-----Getting purpose for plantid = %s-----\n",request.args.get("id"))
         return Response(json.dumps(result),status=200,content_type="application/json")
     else:
         logging.info("-----Getting plant list failure-----\n")
@@ -87,7 +88,7 @@ def getPurpose():
 
 
 # classify route
-@controller.get("/classify")
+@controller.post("/classify")
 def classify():
     if 'pic' not in request.files:
         return Response(response="Error",status=400)
@@ -99,5 +100,5 @@ def classify():
     if(result=="error"):
         return Response(response="Error",status=400)
     elif(result=="Not satisfied"):
-        return Response(response="Could not find leaf",status=400)
+        return Response(response="No Leaf",status=400)
     return Response(response=json.dumps(result, default=str),status=200)

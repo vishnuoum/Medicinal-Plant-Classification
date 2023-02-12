@@ -3,6 +3,7 @@ import numpy as np
 from PIL import Image
 from logConfig import logging
 import heapq
+from repository import getPlant
 
 logging.info("-----Loading model-----\n\n\n")
 
@@ -45,7 +46,9 @@ def classify(imagePath):
         # if predictionScore greater than 90% return single class
         if(predictionScore>0.90):
             logging.info("-----Classification report = %s probability = %s-----",classes[_class],predictionScore)
-            result = [{"class":classes[_class],"probability":predictionScore}]
+            result = []
+            details = getPlant(id=_class+1)
+            result.append({"class":classes[_class],"confidence":float(prediction[_class]),"details":details})
             return result
 
         # if 90 >= predictionScore > 80 return two classes
@@ -54,7 +57,8 @@ def classify(imagePath):
             result = []
             _class = heapq.nlargest(2, range(len(prediction)), key=prediction.__getitem__)
             for i in _class:
-                result.append({"class":classes[i],"probability":prediction[i]})
+                details = getPlant(id=i+1)
+                result.append({"class":classes[i],"confidence":float(prediction[i]),"details":details})
             return result
         
         # if 80 >= predictionScore > 70 return two classes
@@ -63,7 +67,8 @@ def classify(imagePath):
             result = []
             _class = heapq.nlargest(3, range(len(prediction)), key=prediction.__getitem__)
             for i in _class:
-                result.append({"class":classes[i],"probability":prediction[i]})
+                details = getPlant(id=i+1)
+                result.append({"class":classes[i],"confidence":float(prediction[i]),"details":details})
             return result
         
         # accuracy criteria not satisfied
