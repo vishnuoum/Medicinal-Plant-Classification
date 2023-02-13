@@ -2,3 +2,4 @@ model/
 .vscode/
 __pycache__/
 data.html
+uploads/*
