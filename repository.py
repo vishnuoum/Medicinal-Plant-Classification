@@ -38,7 +38,7 @@ def getUsername(id):
         return result
 
 def getPlants(q):
-    conn.execute("""Select * from plant where name like %s""",["%"+q+"%"])
+    conn.execute("""Select * from plant where name like %s order by name asc""",["%"+q+"%"])
     logging.info("Execeuted Query ** %s **",conn._last_executed)
     result=conn.fetchall()
     logging.info("Get Plants DB response = %s",json.dumps(result))
