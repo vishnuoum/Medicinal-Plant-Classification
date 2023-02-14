@@ -40,6 +40,8 @@ def signup():
     logging.info("Request Parameters %s",request.form)
 
     result=repository.signup(name=request.form.get("username"),phone=request.form.get("phone"), password = request.form.get("password"))
+    if(result == "exists"):
+        return Response(response="Exists",status=200)
     if(result!="error"):
         logging.info("-----Signup success-----\n")
         return Response(json.dumps(result),status=200,content_type="application/json")

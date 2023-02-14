@@ -15,6 +15,10 @@ def login(phone, password):
         return result
 
 def signup(name, phone, password):
+    conn.execute("""Select 'hello' from user where phone=%s""",[phone])
+    result = conn.fetchone()
+    if(result != None):
+        return "exists"
     if(conn.execute("""Insert into user(id, name, phone, password) values(NULL, %s, %s, sha2(%s,256))""",[name, phone, password])==True):
         logging.info("Execeuted Query ** %s **",conn._last_executed)
         myconn.commit()
